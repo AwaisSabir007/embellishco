@@ -50,9 +50,26 @@
             <p id="empty-cart-msg" class="text-slate-500 text-center py-20 text-sm uppercase tracking-widest">Your bag
                 is empty</p>
         </div>
-        <div id="cart-actions" class="p-8 border-t border-white/5 bg-background-dark/50 backdrop-blur-md hidden">
-            <!-- Checkout Form -->
-            <div id="checkout-form" class="space-y-4 mb-8">
+        <!-- Cart Actions Step 1: Summary -->
+        <div id="cart-summary" class="p-8 border-t border-white/5 bg-background-dark/50 backdrop-blur-md hidden">
+            <div class="flex justify-between mb-6">
+                <span class="text-xs uppercase tracking-widest text-slate-400">Subtotal</span>
+                <span id="cart-subtotal" class="text-primary font-medium">$0</span>
+            </div>
+            <button id="proceed-checkout-btn" onclick="showCheckout()"
+                class="w-full bg-primary text-background-dark py-4 text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-300">
+                Proceed to Checkout
+            </button>
+        </div>
+
+        <!-- Cart Actions Step 2: Checkout Form -->
+        <div id="cart-checkout-form" class="p-8 border-t border-white/5 bg-background-dark/50 backdrop-blur-md hidden">
+            <button onclick="hideCheckout()"
+                class="text-[10px] uppercase tracking-[0.2em] text-slate-500 hover:text-primary mb-6 flex items-center gap-2 transition-colors">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Back to Selection
+            </button>
+            <div class="space-y-4 mb-8">
                 <h4 class="text-xs uppercase tracking-[0.2em] text-primary font-bold mb-4">Shipping Details</h4>
                 <input id="order-name" type="text" placeholder="Full Name" required
                     class="w-full bg-transparent border-b border-white/10 py-2 text-sm focus:border-primary outline-none transition-colors">
@@ -62,8 +79,8 @@
                     class="w-full bg-transparent border-b border-white/10 py-2 text-sm focus:border-primary outline-none transition-colors h-20 resize-none"></textarea>
             </div>
             <div class="flex justify-between mb-6">
-                <span class="text-xs uppercase tracking-widest text-slate-400">Subtotal</span>
-                <span id="cart-subtotal" class="text-primary font-medium">$0</span>
+                <span class="text-xs uppercase tracking-widest text-slate-400">Total</span>
+                <span id="cart-total-final" class="text-primary font-medium">$0</span>
             </div>
             <button id="submit-order-btn" onclick="submitOrder()"
                 class="w-full bg-primary text-background-dark py-4 text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-300">
