@@ -263,6 +263,8 @@ function removeFromCart(productId) {
 function updateCartUI() {
     const cartItemsBody = document.getElementById('cart-items');
     const emptyMsg = document.getElementById('empty-cart-msg');
+    const count = document.getElementById('cart-count');
+    const subtotal = document.getElementById('cart-subtotal');
     const cartSummary = document.getElementById('cart-summary');
     const cartCheckoutForm = document.getElementById('cart-checkout-form');
     const cartFooterEmpty = document.getElementById('cart-footer-empty');
