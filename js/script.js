@@ -1,8 +1,8 @@
 const CONFIG = {
-    // Empty string = same domain (Vercel). localhost for local dev.
-    API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    // Uses localhost when running locally (file:// or localhost), production URL when deployed
+    API_URL: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '')
         ? 'http://localhost:8000'
-        : ''
+        : 'https://embellishco-backend.onrender.com'
 };
 
 const products = [
