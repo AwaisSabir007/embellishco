@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Embellish | Luxury Home Decor</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#dbc7a3",
+                        "background-light": "#f8f7f6",
+                        "background-dark": "#1d1a15",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-dark text-slate-100 font-display">
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]" onclick="toggleCart()"></div>
+    <div id="cart-drawer"
+        class="fixed top-0 right-0 w-full max-w-md h-screen bg-background-dark border-l border-white/5 z-[70] flex flex-col">
+        <div class="p-8 border-b border-white/5 flex justify-between items-center">
+            <h3 class="text-xl font-serif text-primary">Your Selection</h3>
+            <button onclick="toggleCart()" class="text-slate-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-6">
+            <p id="empty-cart-msg" class="text-slate-500 text-center py-20 text-sm uppercase tracking-widest">Your bag
+                is empty</p>
+        </div>
+        <div class="p-8 border-t border-white/5 bg-background-dark/50 backdrop-blur-md">
+            <div class="flex justify-between mb-6">
+                <span class="text-xs uppercase tracking-widest text-slate-400">Subtotal</span>
+                <span id="cart-subtotal" class="text-primary font-medium">$0</span>
+            </div>
+            <button
+                class="w-full bg-primary text-background-dark py-4 text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-300">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div id="quick-view-modal" class="fixed inset-0 z-[80] flex items-center justify-center p-6">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeQuickView()"></div>
+        <div id="quick-view-content"
+            class="relative bg-background-dark border border-white/10 max-w-4xl w-full rounded-lg overflow-hidden flex flex-col md:flex-row shadow-2xl">
+            <button onclick="closeQuickView()"
+                class="absolute top-4 right-4 z-10 text-slate-400 hover:text-white transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="w-full md:w-1/2 aspect-[3/4] md:h-auto bg-slate-800">
+                <img id="qv-image" src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="w-full md:w-1/2 p-12 flex flex-col justify-center">
+                <span id="qv-category" class="text-xs uppercase tracking-[0.3em] text-primary mb-2"></span>
+                <h2 id="qv-name" class="font-serif text-3xl mb-6 text-slate-100"></h2>
+                <p id="qv-price" class="text-xl text-primary mb-8"></p>
+                <p id="qv-description" class="text-slate-400 text-sm leading-relaxed mb-10"></p>
+                <button id="qv-add-btn"
+                    class="w-full bg-primary text-background-dark py-4 text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-300">
+                    Add to Selection
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full z-50 bg-background-dark/80 backdrop-blur-md border-b border-white/5">
+        <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex gap-8 items-center flex-1 text-slate-100 uppercase tracking-widest text-[11px]">
+                <a class="hover:text-primary transition-colors cursor-pointer" onclick="scrollToMain()">Shop</a>
+                <a class="hover:text-primary transition-colors" href="#">Collections</a>
+            </div>
+            <div class="flex-shrink-0">
+                <h1 class="font-serif text-3xl tracking-tight text-primary cursor-pointer"
+                    onclick="window.scrollTo({top:0, behavior:'smooth'})">Embellish</h1>
+            </div>
+            <div class="flex gap-8 items-center justify-end flex-1">
+                <a class="text-xs uppercase tracking-[0.2em] font-medium text-slate-100 hover:text-primary transition-colors"
+                    href="#">Our Story</a>
+                <div class="flex gap-4">
+                    <button class="text-slate-100 hover:text-primary">
+                        <span class="material-symbols-outlined text-[20px]">search</span>
+                    </button>
+                    <button onclick="toggleCart()" class="text-slate-100 hover:text-primary relative group">
+                        <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+                        <span id="cart-count"
+                            class="absolute -top-1 -right-1 bg-primary text-background-dark text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center transform transition-transform group-hover:scale-110">0</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen pt-20 flex flex-col md:flex-row">
+        <div class="w-full md:w-1/2 h-[50vh] md:h-auto bg-cover bg-center grayscale hover:grayscale-0 transition-all duration-1000"
+            style="background-image: url('assets/imgi_17_618471253_17861740248571465_7393612158895155329_n.jpg');">
+        </div>
+        <div
+            class="w-full md:w-1/2 bg-background-dark flex flex-col justify-center items-center px-12 py-20 text-center">
+            <div class="max-w-lg">
+                <p class="text-primary text-xs uppercase tracking-[0.4em] mb-8 font-semibold">Artisanal Heritage</p>
+                <h2 class="text-4xl md:text-6xl font-script text-primary/90 leading-tight mb-10">
+                    A home isn’t complete until it’s Embellished
+                </h2>
+                <div class="w-px h-24 bg-primary/30 mx-auto mb-10"></div>
+                <button onclick="scrollToMain()"
+                    class="px-10 py-4 bg-primary text-background-dark text-xs uppercase tracking-widest font-bold hover:bg-white transition-all duration-300 rounded shadow-[0_0_20px_rgba(219,199,163,0.2)]">
+                    Discover the Collection
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <main id="gallery-root" class="max-w-7xl mx-auto px-6 py-24">
+        <div class="mb-16 text-center">
+            <h3 class="font-serif text-3xl mb-4 italic text-primary">Curated Gallery</h3>
+            <div class="flex justify-center gap-6 text-[11px] uppercase tracking-[0.2em] text-slate-400">
+                <button onclick="filterItems('all')" class="filter-btn text-primary border-b border-primary pb-1">All
+                    Objects</button>
+                <button onclick="filterItems('Marble')"
+                    class="filter-btn hover:text-primary transition-colors">Marble</button>
+                <button onclick="filterItems('Brass')"
+                    class="filter-btn hover:text-primary transition-colors">Brass</button>
+                <button onclick="filterItems('Art')"
+                    class="filter-btn hover:text-primary transition-colors">Art</button>
+                <button onclick="filterItems('Textiles')"
+                    class="filter-btn hover:text-primary transition-colors">Textiles</button>
+            </div>
+        </div>
+
+        <div id="gallery-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Items injected by js/script.js -->
+        </div>
+
+        <!-- Featured Story Section -->
+        <section class="mt-32 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+            <div class="order-2 md:order-1">
+                <p class="text-primary text-xs uppercase tracking-[0.4em] mb-6">Our Heritage</p>
+                <h2 class="font-serif text-4xl mb-8 leading-relaxed text-slate-100">Preserving the soul of
+                    <br />Pakistani craftsmanship.
+                </h2>
+                <p class="text-slate-400 leading-loose text-sm mb-10 max-w-md">
+                    Each piece in our gallery is ethically sourced and meticulously handcrafted by master artisans using
+                    techniques passed down through generations. From the marble mines of Swat to the textile hubs of
+                    Multan, we bring timeless luxury to your sanctuary.
+                </p>
+                <a class="inline-flex items-center gap-4 text-xs uppercase tracking-widest font-bold group text-primary"
+                    href="#">
+                    Explore Our Story
+                    <span class="w-12 h-px bg-primary transition-all duration-300 group-hover:w-20"></span>
+                </a>
+            </div>
+            <div class="order-1 md:order-2 aspect-square relative bg-slate-800 rounded-lg overflow-hidden shadow-2xl">
+                <img alt="Artisan at work"
+                    class="w-full h-full object-cover opacity-80 transition-all duration-700 hover:scale-110"
+                    src="assets/imgi_5_632389233_917399824210783_3152855461923127057_n.jpg" />
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                <div class="md:col-span-1">
+                    <h2 class="font-serif text-2xl text-primary mb-6">Embellish</h2>
+                    <p class="text-slate-500 text-xs leading-relaxed uppercase tracking-widest font-medium">
+                        Quiet luxury for the <br />modern home.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-xs uppercase tracking-[0.2em] font-bold mb-6 text-primary">Contact</h5>
+                    <ul class="text-slate-400 text-sm space-y-4">
+                        <li><a class="hover:text-primary transition-colors" href="#">Inquiries</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Bespoke Orders</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Showrooms</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs uppercase tracking-[0.2em] font-bold mb-6 text-primary">Connect</h5>
+                    <ul class="text-slate-400 text-sm space-y-4">
+                        <li><a class="hover:text-primary transition-colors" href="#">Instagram</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Pinterest</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="#">Journal</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs uppercase tracking-[0.2em] font-bold mb-6 text-primary">Newsletter</h5>
+                    <p class="text-slate-400 text-xs mb-4">Join our inner circle for exclusive previews.</p>
+                    <form class="flex border-b border-primary/30 pb-2" onsubmit="handleNewsletter(event)">
+                        <input required
+                            class="bg-transparent border-none focus:ring-0 text-xs w-full placeholder:text-slate-600 text-primary uppercase tracking-widest"
+                            placeholder="Email Address" type="email" />
+                        <button class="material-symbols-outlined text-primary text-[20px]"
+                            type="submit">arrow_forward</button>
+                    </form>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 gap-4">
+                <p class="text-[10px] text-slate-600 uppercase tracking-widest">© 2024 Embellish Artisanal Home. All
+                    rights reserved.</p>
+                <div class="flex gap-8 text-[10px] text-slate-600 uppercase tracking-widest">
+                    <a class="hover:text-slate-300" href="#">Privacy</a>
+                    <a class="hover:text-slate-300" href="#">Terms</a>
+                    <a class="hover:text-slate-300" href="#">Shipping</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
