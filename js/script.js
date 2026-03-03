@@ -1,3 +1,10 @@
+const CONFIG = {
+    // Replace with your Render URL after deployment
+    API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:8000'
+        : 'https://embellishco-backend.onrender.com'
+};
+
 const products = [
     {
         id: 1,
@@ -383,7 +390,7 @@ async function submitOrder() {
     statusMsg.className = "text-[10px] text-center mt-4 uppercase tracking-widest text-slate-400";
 
     try {
-        const response = await fetch('http://localhost:8000/api/orders', {
+        const response = await fetch(`${CONFIG.API_URL}/api/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
