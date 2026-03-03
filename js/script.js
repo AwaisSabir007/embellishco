@@ -264,6 +264,9 @@ function updateCartUI() {
     const count = document.getElementById('cart-count');
     const subtotal = document.getElementById('cart-subtotal');
 
+    const cartActions = document.getElementById('cart-actions');
+    const cartFooterEmpty = document.getElementById('cart-footer-empty');
+
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
     const totalPrice = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
@@ -273,8 +276,12 @@ function updateCartUI() {
     if (cart.length === 0) {
         if (emptyMsg) emptyMsg.style.display = 'block';
         if (cartItemsBody) cartItemsBody.innerHTML = '';
+        if (cartActions) cartActions.classList.add('hidden');
+        if (cartFooterEmpty) cartFooterEmpty.classList.remove('hidden');
     } else {
         if (emptyMsg) emptyMsg.style.display = 'none';
+        if (cartActions) cartActions.classList.remove('hidden');
+        if (cartFooterEmpty) cartFooterEmpty.classList.add('hidden');
         if (cartItemsBody) cartItemsBody.innerHTML = cart.map(item => `
             <div class="flex gap-6 items-center group">
                 <div class="w-16 h-20 bg-slate-800 overflow-hidden">
@@ -318,6 +325,72 @@ function handleNewsletter(e) {
     const input = e.target.querySelector('input');
     alert(`Welcome to the inner circle. Exclusive previews will be sent to ${input.value}`);
     input.value = '';
+}
+
+async function submitOrder() {
+    const name = document.getElementById('order-name').value;
+    const phone = document.getElementById('order-phone').value;
+    const location = document.getElementById('order-location').value;
+    const statusMsg = document.getElementById('order-status');
+    const submitBtn = document.getElementById('submit-order-btn');
+
+    if (!name || !phone || !location) {
+        alert("Please fill in all shipping details.");
+        return;
+    }
+
+    const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const orderData = {
+        name,
+        phone,
+        location,
+        items: cart,
+        total
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Processing...";
+    statusMsg.classList.remove('hidden');
+    statusMsg.innerText = "Sending order...";
+    statusMsg.className = "text-[10px] text-center mt-4 uppercase tracking-widest text-slate-400";
+
+    try {
+        const response = await fetch('http://localhost:8000/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            statusMsg.innerText = "Order Confirmed! Thank you.";
+            statusMsg.className = "text-[10px] text-center mt-4 uppercase tracking-widest text-primary";
+            cart = [];
+            localStorage.removeItem('embellish-cart');
+            setTimeout(() => {
+                updateCartUI();
+                toggleCart();
+                statusMsg.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Confirm Order";
+                // Clear form
+                document.getElementById('order-name').value = '';
+                document.getElementById('order-phone').value = '';
+                document.getElementById('order-location').value = '';
+            }, 3000);
+        } else {
+            throw new Error(result.message || 'Failed to submit order');
+        }
+    } catch (error) {
+        console.error('Order Error:', error);
+        statusMsg.innerText = "Error: " + error.message;
+        statusMsg.className = "text-[10px] text-center mt-4 uppercase tracking-widest text-red-400";
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Confirm Order";
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initGallery);
