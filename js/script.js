@@ -1,8 +1,8 @@
 const CONFIG = {
-    // Replace with your Render URL after deployment
+    // Empty string = same domain (Vercel). localhost for local dev.
     API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
         ? 'http://localhost:8000'
-        : 'https://embellishco-backend.onrender.com'
+        : ''
 };
 
 const products = [
