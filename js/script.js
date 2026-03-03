@@ -390,7 +390,7 @@ async function submitOrder() {
     statusMsg.className = "text-[10px] text-center mt-4 uppercase tracking-widest text-slate-400";
 
     try {
-        const response = await fetch(`${CONFIG.API_URL}/api/orders`, {
+        const response = await fetch(CONFIG.API_URL + '/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
