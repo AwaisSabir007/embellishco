@@ -278,7 +278,7 @@ function updateCartUI() {
         if (cartItemsBody) cartItemsBody.innerHTML = cart.map(item => `
             <div class="flex gap-6 items-center group">
                 <div class="w-16 h-20 bg-slate-800 overflow-hidden">
-                    <img src="${item.image}" class="w-full h-full object-cover">
+                    <img src="${item.image.startsWith('assets/') ? item.image : 'assets/' + item.image}" class="w-full h-full object-cover">
                 </div>
                 <div class="flex-1">
                     <h5 class="text-xs uppercase tracking-widest mb-1 text-slate-100">${item.name}</h5>
