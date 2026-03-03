@@ -1,0 +1,6 @@
+# No external dependencies currently required for the base server.py
+# This is a placeholder for future-proofing as the project grows.
+# For example, if you want to use a more robust server like Flask or FastAPI:
+# flask
+# fastapi
+# uvicorn
